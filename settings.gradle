@@ -1,0 +1,3 @@
+rootProject.name = 'raml-java-guard'
+
+include 'core'

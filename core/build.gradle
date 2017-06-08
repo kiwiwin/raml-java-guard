@@ -1,0 +1,4 @@
+dependencies {
+    compile "org.raml:raml-parser-2:$raml_parser"
+    compile "javax.ws.rs:javax.ws.rs-api:$jaxrs"
+}
