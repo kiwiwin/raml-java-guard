@@ -9,6 +9,5 @@ import java.io.IOException;
 public class RamlGuardRequestFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        //TODO: logic goes here to read raml to test against request schema definition
     }
 }
