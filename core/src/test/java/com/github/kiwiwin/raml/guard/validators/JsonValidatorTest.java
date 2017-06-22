@@ -59,6 +59,17 @@ public class JsonValidatorTest {
         assertThat(result.getErrors().get(0).getMessage(), is("Missing required field \"age\""));
     }
 
+    @Test
+    public void should_validate_request_in_array() throws Exception {
+        String payload = "[{\"name\": \"hello\", \"email\": \"jian@gmail.com\"}]";
+
+        ValidationResult result = jsonValidator.validate(typeOf("http://test/orgs", "post"), payload);
+        assertThat(result.hasError(), is(true));
+        assertThat(result.getErrors().size(), is(1));
+        assertThat(result.getErrors().get(0).getPath(), is("/0"));
+        assertThat(result.getErrors().get(0).getMessage(), is("Missing required field \"age\""));
+    }
+
     private TypeDeclarationNode typeOf(String url, String method) {
         RamlModelResult ramlModelResult = new RamlModelBuilder().buildApi("input.raml");
         Resource resource = new Router(ramlModelResult.getApiV10()).route(url).get();

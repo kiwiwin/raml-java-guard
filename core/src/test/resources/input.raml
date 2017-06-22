@@ -15,12 +15,12 @@ types:
     type: Person[]
 
 /orgs:
+  post:
+    description: create an org
+    body:
+      application/json:
+        type: Org
   /{orgId}:
-    post:
-      description: create an org
-      body:
-        application/json:
-          type: Org
     /persons:
       post:
         description: create a new person
