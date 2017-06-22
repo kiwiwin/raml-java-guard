@@ -11,10 +11,6 @@ import static org.apache.commons.lang.StringUtils.EMPTY;
 public class JsonUtils {
 
     public static String toJson(Node node) {
-        return dumpJson(node);
-    }
-
-    static String dumpJson(Node child) {
 
         List<NodeJsonDumper> dumpers = newArrayList(
                 new KeyValueNodeDumper(),
@@ -26,8 +22,8 @@ public class JsonUtils {
 
         return dumpers.stream()
                 .map(dumper -> {
-                            if (dumper.canDump(child)) {
-                                return dumper.dump(child);
+                            if (dumper.canDump(node)) {
+                                return dumper.dump(node);
                             }
                             return EMPTY;
                         }
@@ -36,7 +32,7 @@ public class JsonUtils {
 
     static String dumpChildren(List<Node> children) {
         return children.stream()
-                .map(JsonUtils::dumpJson)
+                .map(JsonUtils::toJson)
                 .collect(Collectors.joining(","));
     }
 }

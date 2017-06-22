@@ -3,7 +3,7 @@ package com.github.kiwiwin.raml.guard.utils;
 import org.raml.yagi.framework.nodes.KeyValueNode;
 import org.raml.yagi.framework.nodes.Node;
 
-import static com.github.kiwiwin.raml.guard.utils.JsonUtils.dumpJson;
+import static com.github.kiwiwin.raml.guard.utils.JsonUtils.toJson;
 
 public class KeyValueNodeDumper implements NodeJsonDumper {
 
@@ -17,6 +17,6 @@ public class KeyValueNodeDumper implements NodeJsonDumper {
     public String dump(Node node) {
         KeyValueNode keyValueNode = (KeyValueNode) node;
         return String.format("%s:%s",
-                dumpJson(keyValueNode.getKey()), dumpJson(keyValueNode.getValue()));
+                toJson(keyValueNode.getKey()), toJson(keyValueNode.getValue()));
     }
 }
