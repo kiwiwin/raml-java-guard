@@ -15,29 +15,24 @@ public class ErrorNodeDumper implements NodeJsonDumper {
         return buildError((ErrorNode) node);
     }
 
-    private String buildError(ErrorNode child) {
+    private String buildError(ErrorNode node) {
         StringBuilder builder = new StringBuilder();
 
-        if (child.getParent() instanceof KeyValueNode) {
+        if (node.getParent() instanceof KeyValueNode) {
             builder.append("{");
         }
 
-        error(child, builder);
+        builder.append(error(node));
 
-        if (child.getParent() instanceof KeyValueNode) {
+        if (node.getParent() instanceof KeyValueNode) {
             builder.append("}");
         }
 
         return builder.toString();
     }
 
-    private void error(ErrorNode child, StringBuilder builder) {
-        builder.append("\"error\":{");
-        builder.append("\"message\":");
-        builder.append("\"");
-        builder.append(washMessage(child));
-        builder.append("\"");
-        builder.append("}");
+    private String error(ErrorNode node) {
+        return String.format("\"error\":{\"message\":\"%s\"}", washMessage(node));
     }
 
     private static String washMessage(ErrorNode child) {
