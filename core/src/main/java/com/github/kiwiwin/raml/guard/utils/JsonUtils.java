@@ -1,17 +1,29 @@
 package com.github.kiwiwin.raml.guard.utils;
 
+import org.apache.commons.lang.StringUtils;
 import org.raml.yagi.framework.nodes.Node;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static org.apache.commons.lang.StringUtils.EMPTY;
 
 public class JsonUtils {
 
     public static String toJson(Node node) {
+        return getDumper(node)
+                .map(nodeJsonDumper -> nodeJsonDumper.dump(node))
+                .orElse(StringUtils.EMPTY);
+    }
 
+    static String dumpChildren(List<Node> children) {
+        return children.stream()
+                .map(JsonUtils::toJson)
+                .collect(Collectors.joining(","));
+    }
+
+    private static Optional<NodeJsonDumper> getDumper(Node node) {
         List<NodeJsonDumper> dumpers = newArrayList(
                 new KeyValueNodeDumper(),
                 new ObjectNodeDumper(),
@@ -19,20 +31,8 @@ public class JsonUtils {
                 new ArrayNodeDumper(),
                 new ErrorNodeDumper()
         );
-
         return dumpers.stream()
-                .map(dumper -> {
-                            if (dumper.canDump(node)) {
-                                return dumper.dump(node);
-                            }
-                            return EMPTY;
-                        }
-                ).collect(Collectors.joining());
-    }
-
-    static String dumpChildren(List<Node> children) {
-        return children.stream()
-                .map(JsonUtils::toJson)
-                .collect(Collectors.joining(","));
+                .filter(dumper -> dumper.canDump(node))
+                .findFirst();
     }
 }
