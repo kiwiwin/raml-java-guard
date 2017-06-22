@@ -1,5 +1,6 @@
 #%RAML 1.0
 title: simple object
+baseUri: http://testapi.com/
 types:
   Person:
     properties:
@@ -24,3 +25,8 @@ types:
       /{personId}:
         get:
           description: get a specific person
+/offices:
+  /regions:
+    /seats:
+      get:
+        description: get a seat
