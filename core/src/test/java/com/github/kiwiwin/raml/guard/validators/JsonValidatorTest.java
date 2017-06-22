@@ -27,10 +27,7 @@ public class JsonValidatorTest {
         ValidationResult result = jsonValidator.validate(
                 typeOf("http://test/orgs/1/persons", "post"), payload);
 
-        assertThat(result.hasError(), is(true));
-        assertThat(result.getErrors().size(), is(1));
-        assertThat(result.getErrors().get(0).getPath(), is("/email"));
-        assertThat(result.getErrors().get(0).getMessage(), is("Invalid value 'hell'. Expected ^.+@.+\\..+$"));
+        assertThat(result.path("$.email.error.message"), is("Invalid value 'hell'. Expected ^.+@.+\\..+$"));
     }
 
     @Test
@@ -39,12 +36,8 @@ public class JsonValidatorTest {
 
         ValidationResult result = jsonValidator.validate(typeOf("http://test/orgs/1/persons", "post"), payload);
 
-        assertThat(result.hasError(), is(true));
-        assertThat(result.getErrors().size(), is(2));
-        assertThat(result.getErrors().get(0).getPath(), is("/email"));
-        assertThat(result.getErrors().get(0).getMessage(), is("Invalid value 'hell'. Expected ^.+@.+\\..+$"));
-        assertThat(result.getErrors().get(1).getPath(), is("/age"));
-        assertThat(result.getErrors().get(1).getMessage(), is("Expected minimum value 0"));
+        assertThat(result.path("$.email.error.message"), is("Invalid value 'hell'. Expected ^.+@.+\\..+$"));
+        assertThat(result.path("$.age.error.message"), is("Expected minimum value 0"));
     }
 
     @Test
@@ -53,10 +46,7 @@ public class JsonValidatorTest {
 
         ValidationResult result = jsonValidator.validate(typeOf("http://test/orgs/1/persons", "post"), payload);
 
-        assertThat(result.hasError(), is(true));
-        assertThat(result.getErrors().size(), is(1));
-        assertThat(result.getErrors().get(0).getPath(), is("/"));
-        assertThat(result.getErrors().get(0).getMessage(), is("Missing required field \"age\""));
+        assertThat(result.path("$.error.message"), is("Missing required field 'age'"));
     }
 
     @Test
@@ -64,10 +54,8 @@ public class JsonValidatorTest {
         String payload = "[{\"name\": \"hello\", \"email\": \"jian@gmail.com\"}]";
 
         ValidationResult result = jsonValidator.validate(typeOf("http://test/orgs", "post"), payload);
-        assertThat(result.hasError(), is(true));
-        assertThat(result.getErrors().size(), is(1));
-        assertThat(result.getErrors().get(0).getPath(), is("/0"));
-        assertThat(result.getErrors().get(0).getMessage(), is("Missing required field \"age\""));
+
+        assertThat(result.path("$.[0].error.message"), is("Missing required field 'age'"));
     }
 
     private TypeDeclarationNode typeOf(String url, String method) {

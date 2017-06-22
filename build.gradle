@@ -18,6 +18,8 @@ subprojects {
 
         raml_parser = '1.0.9'
 
+        json_path = '2.2.0'
+
         /**
          * TEST
          */
