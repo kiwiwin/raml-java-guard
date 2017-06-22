@@ -16,6 +16,11 @@ types:
 
 /orgs:
   /{orgId}:
+    post:
+      description: create an org
+      body:
+        application/json:
+          type: Org
     /persons:
       post:
         description: create a new person

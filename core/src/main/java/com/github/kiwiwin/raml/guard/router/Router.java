@@ -9,17 +9,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-class Router {
+public class Router {
     private Api api;
     private List<Matcher> matchers = new ArrayList<>();
 
-    Router(Api api) {
+    public Router(Api api) {
         this.api = api;
         this.matchers.add(new ExactMatcher());
         this.matchers.add(new PatternMatcher());
     }
 
-    Optional<Resource> route(String url) {
+    public Optional<Resource> route(String url) {
         return matchers.stream()
                 .map(matcher -> route(api.resources(), url, matcher))
                 .flatMap(Collection::stream)

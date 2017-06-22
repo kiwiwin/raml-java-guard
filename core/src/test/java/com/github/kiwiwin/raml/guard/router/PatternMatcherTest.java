@@ -3,6 +3,7 @@ package com.github.kiwiwin.raml.guard.router;
 import org.junit.Test;
 import org.raml.v2.api.model.v10.resources.Resource;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -14,7 +15,7 @@ public class PatternMatcherTest {
         Resource resource = mock(Resource.class);
         when(resource.resourcePath()).thenReturn("/resources/{resourceId}/subresources/{subId}");
 
-        assertTrue(matcher.match(resource, "http://testapi.com/resources/1/subresource/subId"));
+        assertTrue(matcher.match(resource, "http://testapi.com/resources/1/subresources/subId"));
     }
 
     @Test
@@ -23,6 +24,6 @@ public class PatternMatcherTest {
         Resource resource = mock(Resource.class);
         when(resource.resourcePath()).thenReturn("/resources/{resourceId}/subresources/{subId}");
 
-        assertTrue(matcher.match(resource, "http://testapi.com/resources//subresource/subId"));
+        assertFalse(matcher.match(resource, "http://testapi.com/resources//subresources/subId"));
     }
 }

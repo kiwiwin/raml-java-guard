@@ -6,7 +6,7 @@ import java.net.URI;
 
 class PatternMatcher implements Matcher {
 
-    public static final String URT_TEMPLATE = "\\{.*\\}";
+    public static final String URT_TEMPLATE = "\\{(.*?)\\}";
 
     @Override
     public boolean match(Resource resource, String url) {
@@ -14,6 +14,6 @@ class PatternMatcher implements Matcher {
     }
 
     private String regex(Resource resource) {
-        return resource.resourcePath().replaceAll(URT_TEMPLATE, ".*");
+        return String.format("^%s$", resource.resourcePath().replaceAll(URT_TEMPLATE, ".+"));
     }
 }
