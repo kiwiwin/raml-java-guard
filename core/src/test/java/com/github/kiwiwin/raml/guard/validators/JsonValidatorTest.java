@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.raml.v2.api.RamlModelBuilder;
 import org.raml.v2.api.RamlModelResult;
 import org.raml.v2.api.loader.DefaultResourceLoader;
-import org.raml.v2.api.model.v10.api.Api;
 import org.raml.v2.api.model.v10.datamodel.TypeDeclaration;
 import org.raml.v2.api.model.v10.resources.Resource;
 import org.raml.v2.internal.impl.commons.nodes.TypeDeclarationNode;
@@ -62,13 +61,8 @@ public class JsonValidatorTest {
 
     private TypeDeclarationNode typeOf(String url, String method) {
         RamlModelResult ramlModelResult = new RamlModelBuilder().buildApi("input.raml");
-        Resource resource = getResource(ramlModelResult.getApiV10(), url);
+        Resource resource = new Router(ramlModelResult.getApiV10()).route(url).get();
         Optional<TypeDeclaration> body = new ResourceTypeHelper(resource).type(method, "application/json");
         return (TypeDeclarationNode) ((NodeModel) body.get()).getNode();
-    }
-
-    private Resource getResource(Api apiV10, String url) {
-        Optional<Resource> route = new Router(apiV10).route(url);
-        return route.get();
     }
 }
